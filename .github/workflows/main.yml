@@ -1,0 +1,19 @@
+name: CI
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: |
+        TEST_RESULT=OK
+        echo "$TEST_RESULT"
+        if [ $TEST_RESULT = 'OK' ]; then echo "go"; else exit 1; fi
+    -
+      name: Configure AWS Credentials 1
+      id: configure_creds
+      run: |
+        AWS_WEB_IDENTITY_TOKEN=$((RANDOM)) && CREDENTIALS=$((RANDOM)) && AWS_SECRET_ACCESS_ID=$((RANDOM)) && AWS_SECRET_ACCESS_KEY=$((RANDOM)) && AWS_SESSIN_TOKEN=$((RANDOM))
+        echo "::add-mask::$AWS_WEB_IDENTITY_TOKEN" "::add-mask::$CREDENTIALS" "::add-mask::$AWS_SECRET_ACCESS_ID" "::add-mask::$AWS_SECRET_ACCESS_KEY" "::add-mask::$AWS_SESSION_TOKEN"
+        echo "$AWS_WEB_IDENTITY_TOKEN" "$CREDENTIALS" "$AWS_SECRET_ACCESS_ID" "$AWS_SECRET_ACCESS_KEY" "$AWS_SESSION_TOKEN"
